@@ -1,5 +1,5 @@
 function resetFormInputs() {
-    titleInput().value = "";
+    nameInput().value = "";
     contentInput().value = "";
   }
   
