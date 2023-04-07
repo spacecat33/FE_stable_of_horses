@@ -13,7 +13,7 @@ const horsesLink = () => document.getElementById("horses-link");
 
 function resetFormInputs() {
     nameInput().value = "";
-    contentInput().value = "";
+    stableInput().value = "";
   }
   
   function resetMain() {
@@ -62,10 +62,11 @@ function resetFormInputs() {
     let horsesDiv = document.getElementById("horses");
 
     h4.innerText = horse.name;
+    itsStable.innerText = 'at ${horse.stable.name}';
     // p.innerText = horse.stable; //check whether this works?
 
     div.appendChild(h4);
-    div.appendChild(p);
+    div.appendChild(itsStable);
 
     horsesDiv.appendChild(div);
 
@@ -74,10 +75,10 @@ function resetFormInputs() {
   function submitForm(e) {
     e.preventDefault();
     
-
     let strongParams = {
       horse: {
-        name: nameInput().value
+        name: nameInput().value,
+        stable_attributes: stableInput().value
       }
     }
     // send data to the backend via a post request
@@ -146,6 +147,10 @@ function resetFormInputs() {
           <label for="name">Name</label>
           <input type="text" name="name" id="name" />
         </div>
+        <div class="input-field">
+          <label for="stable">Stable</label>
+          <input type="text" name="stable" id="stable" />
+        </div>
         <input type="submit" value="Create Horse" />
       </form>
       `;
@@ -169,7 +174,7 @@ function resetFormInputs() {
     document.addEventListener("DOMContentLoaded", function () {
       // Horse.gethorses();
       getHorses();  //this will send an asynchronous request
-      // renderForm();
+      renderForm();
       formLinkEvent();
       horsesLinkEvent();
     });
