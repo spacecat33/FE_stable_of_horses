@@ -31,8 +31,8 @@ function resetFormInputs() {
   function horsesLinkEvent() {
     horsesLink().addEventListener("click", function (e) {
       e.preventDefault();
-      console.log(this);
-      Horse.renderHorses();
+      // console.log(this);
+      renderHorses();
     });
   }
   
@@ -58,19 +58,54 @@ function resetFormInputs() {
   function renderHorse(horse) {
     let div = document.createElement("div");
     let h4 = document.createElement("h4");
+    // let itsStable = document.createElement('p');
     let p = document.createElement("p");
+    let deleteLink = document.createElement("a");
     let horsesDiv = document.getElementById("horses");
+    
+    deleteLink.dataset.id = horse.id
+    deleteLink.setAttribute("href", "#")
+    deleteLink.innerText = "Delete"
 
+    deleteLink.addEventListener("click", deleteHorse)
+    // debugger //is the pry of javascript
+   
     h4.innerText = horse.name;
-    itsStable.innerText = 'at ${horse.stable.name}';
-    // p.innerText = horse.stable; //check whether this works?
+    // itsStable.innerText = 'at ${horse.stable}';
+    p.innerText = horse.stable; //check whether this works?
 
     div.appendChild(h4);
-    div.appendChild(itsStable);
-
+    // div.appendChild(itsStable);
+    div.appendChild(p);
+    div.appendChild(deleteLink);
+    
     horsesDiv.appendChild(div);
 
   }
+
+  function deleteHorse(e) {
+    e.preventDefault(); //this prevents default GET request when a link is clicked
+
+    let id = e.target.dataset.id;
+
+    fetch(baseUrl + "/horses/" + id, {
+     method: "DELETE"
+    })
+    .then(function(resp) {
+      return resp.json();
+    })
+    .then(function(data) {
+      // debugger;
+      horses = horses.filter(function(horse){
+        return horse.id !== data.id;
+      })
+      
+      renderHorses();
+    })
+  }
+    // debugger;
+  
+
 
   function submitForm(e) {
     e.preventDefault();
@@ -78,7 +113,7 @@ function resetFormInputs() {
     let strongParams = {
       horse: {
         name: nameInput().value,
-        stable_attributes: stableInput().value
+        stable: stableInput().value
       }
     }
     // send data to the backend via a post request
@@ -105,7 +140,7 @@ function resetFormInputs() {
 
     
 
-  function getHorses(){
+  function getHorses() {
     // console.log('a')
     //fetch to the rails api, horses index. Grab the horses
     // populate the main div with the horses
@@ -174,7 +209,7 @@ function resetFormInputs() {
     document.addEventListener("DOMContentLoaded", function () {
       // Horse.gethorses();
       getHorses();  //this will send an asynchronous request
-      renderForm();
+      // renderForm();
       formLinkEvent();
       horsesLinkEvent();
     });
