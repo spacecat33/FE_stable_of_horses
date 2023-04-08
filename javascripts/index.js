@@ -4,7 +4,7 @@ const baseUrl = "http://localhost:3000"
 
 const main = () => document.getElementById("main");
 const nameInput = () => document.getElementById("name");
-const stableInput = () => document.getElementById("stable");
+// const stableInput = () => document.getElementById("stable"); 
 const form = () => document.getElementById("form");
 const formLink = () => document.getElementById("form-link");
 const horsesLink = () => document.getElementById("horses-link");
@@ -13,7 +13,7 @@ const horsesLink = () => document.getElementById("horses-link");
 
 function resetFormInputs() {
     nameInput().value = "";
-    stableInput().value = "";
+    // stableInput().value = "";
   }
   
   function resetMain() {
@@ -49,9 +49,52 @@ function resetFormInputs() {
   function renderEditForm(horse) {
     resetMain();
     main().innerHTML = editFormTemplate(horse);
-    // form().addEventListener("submit", submitForm);
+    form().addEventListener("submit", submitEditForm);
   }
 
+
+
+
+  function submitEditForm(e) {
+    e.preventDefault();
+
+    let strongParams = {
+      horse: {
+        name: nameInput().value,
+        // stable: stableInput().value
+      }
+    }
+    
+    const id = e.target.dataset.id;
+
+    fetch(baseUrl + "/horses/" + id, {
+      // this will point to a JS object and represent our strong params
+      method: "PATCH",
+      headers: {
+        // this is how we want to send and receive our requests
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(strongParams),
+    })
+    .then(function(resp) {
+      return resp.json();
+    })
+    .then(function(horse) {
+      //selects the horse out of the array
+      let h = horses.find(function(h) {
+        return h.id == horse.id;  
+    })
+  // gets the index of the selected horse
+    let idx = horses.indexOf(h);
+
+   //updates the index value with the newly updated horse but note that the id is the same
+    horses[idx] = horse;
+    
+    //renders the array of horses to page
+    renderHorses();
+  })
+}
 
   function renderHorses() {
     resetMain();
@@ -137,7 +180,7 @@ function editHorse(e) {
     let strongParams = {
       horse: {
         name: nameInput().value,
-        stable: stableInput().value
+        // stable: stableInput().value
       }
     }
     // send data to the backend via a post request
@@ -218,7 +261,7 @@ function editHorse(e) {
     function editFormTemplate(horse) {
       return `
       <h3>Edit Horse</h3>
-      <form id="form" data-id="${horse.id}">
+      <form id="form" data-id="${horse.id}"> 
         <div class="input-field">
           <label for="name">Name</label>
           <input type="text" name="name" id="name" value="${horse.name}" />
@@ -226,7 +269,7 @@ function editHorse(e) {
         <input type="submit" value="Edit Horse" />
       </form>
       `;
-    }
+    } //the data-id with horse.id interpolated let's grab the form plus the specific id. This is needed for the request.
   
 
 
