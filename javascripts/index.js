@@ -47,9 +47,9 @@ function resetFormInputs() {
   }
 
   function renderEditForm(horse) {
-    resetMain();
-    main().innerHTML = editFormTemplate(horse);
-    form().addEventListener("submit", submitEditForm);
+    resetMain(); // reset the main div/clear it out
+    main().innerHTML = editFormTemplate(horse); //display the form with the horse's information included in the fields
+    form().addEventListener("submit", submitEditForm); // when click on submiteditform, takes us to submiteditform function
   }
 
 
@@ -75,21 +75,21 @@ function resetFormInputs() {
         "Accept": "application/json",
         "Content-Type": "application/json"
       },
-      body: JSON.stringify(strongParams),
-    })
+      body: JSON.stringify(strongParams), //stringifying the JSON to look like a string. it's still an object.
+    }) //then goes to update action in backend horses_controller
     .then(function(resp) {
       return resp.json();
     })
     .then(function(horse) {
       //selects the horse out of the array
-      let h = horses.find(function(h) {
+      let h = horses.find(function(h) { // this code and below updates the frontend object to match the updated backend object (which was just updates with code above)
         return h.id == horse.id;  
     })
   // gets the index of the selected horse
     let idx = horses.indexOf(h);
 
    //updates the index value with the newly updated horse but note that the id is the same
-    horses[idx] = horse;
+    horses[idx] = horse; // this takes the old object and updates it 
     
     //renders the array of horses to page
     renderHorses();
@@ -118,11 +118,12 @@ function resetFormInputs() {
     editLink.setAttribute("href", "#")
     editLink.innerText = "Edit"
 
-    deleteLink.dataset.id = horse.id
+    deleteLink.dataset.id = horse.id;
     deleteLink.setAttribute("href", "#")
     deleteLink.innerText = "Delete"
 
     editLink.addEventListener("click", editHorse); //adding eventlistener when the linkloads (not when the page loads)
+    
     deleteLink.addEventListener("click", deleteHorse)
     // debugger //is the pry of javascript
    
@@ -130,6 +131,8 @@ function resetFormInputs() {
     // itsStable.innerText = 'at ${horse.stable}';
     p.innerText = horse.stable; //check whether this works?
 
+
+    //the following is code for making them show up on page
     div.appendChild(h4);
     // div.appendChild(itsStable);
     div.appendChild(p);
@@ -143,10 +146,10 @@ function resetFormInputs() {
   function deleteHorse(e) {
     e.preventDefault(); //this prevents default GET request when a link is clicked
 
-    let id = e.target.dataset.id;
+    let id = e.target.dataset.id; //grabs the deleteLink's dataset (set above: deleteLink.dataset.id = horse.id)
 
     fetch(baseUrl + "/horses/" + id, {
-     method: "DELETE"
+     method: "DELETE" //this goes to backend controller destroy action
     })
     .then(function(resp) {
       return resp.json();
@@ -162,6 +165,8 @@ function resetFormInputs() {
   }
     // debugger;
   
+
+
 function editHorse(e) {
   e.preventDefault();
   
