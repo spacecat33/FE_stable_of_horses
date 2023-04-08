@@ -46,6 +46,13 @@ function resetFormInputs() {
     form().addEventListener("submit", submitForm);
   }
 
+  function renderEditForm(horse) {
+    resetMain();
+    main().innerHTML = editFormTemplate(horse);
+    // form().addEventListener("submit", submitForm);
+  }
+
+
   function renderHorses() {
     resetMain();
     main().innerHTML= horsesTemplate();
@@ -61,12 +68,18 @@ function resetFormInputs() {
     // let itsStable = document.createElement('p');
     let p = document.createElement("p");
     let deleteLink = document.createElement("a");
+    let editLink = document.createElement("a");
     let horsesDiv = document.getElementById("horses");
     
+    editLink.dataset.id = horse.id;
+    editLink.setAttribute("href", "#")
+    editLink.innerText = "Edit"
+
     deleteLink.dataset.id = horse.id
     deleteLink.setAttribute("href", "#")
     deleteLink.innerText = "Delete"
 
+    editLink.addEventListener("click", editHorse); //adding eventlistener when the linkloads (not when the page loads)
     deleteLink.addEventListener("click", deleteHorse)
     // debugger //is the pry of javascript
    
@@ -77,6 +90,7 @@ function resetFormInputs() {
     div.appendChild(h4);
     // div.appendChild(itsStable);
     div.appendChild(p);
+    div.appendChild(editLink);
     div.appendChild(deleteLink);
     
     horsesDiv.appendChild(div);
@@ -99,13 +113,23 @@ function resetFormInputs() {
       horses = horses.filter(function(horse){
         return horse.id !== data.id;
       })
-      
+
       renderHorses();
     })
   }
     // debugger;
   
+function editHorse(e) {
+  e.preventDefault();
+  
+  const id = e.target.dataset.id;
 
+  const horse = horses.find(function(horse) {
+    return horse.id == id;
+  })
+
+  renderEditForm(horse)
+}
 
   function submitForm(e) {
     e.preventDefault();
