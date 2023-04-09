@@ -1,4 +1,9 @@
-// class Horse {
+MODELS FOLDER ENCAPSULATES DATA
+ class Horse {
+  constructor(attr) {}
+ }
+
+  
 //     static all = []
   
 //     constructor(attr) {
