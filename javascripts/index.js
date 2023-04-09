@@ -1,4 +1,4 @@
-function resetFormInputs() {
+function resetFormInputs() { //if had multiple forms then recommend moving this to Horse class.
     nameInput().value = "";
     // stableInput().value = "";
   }
