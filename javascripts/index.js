@@ -1,6 +1,5 @@
 function resetFormInputs() { //if had multiple forms then recommend moving this to Horse class.
     nameInput().value = "";
-    // stableInput().value = "";
   }
   
   function resetMain() {
@@ -19,15 +18,15 @@ function resetFormInputs() { //if had multiple forms then recommend moving this 
     horsesLink().addEventListener("click", function (e) {
       e.preventDefault();
       // console.log(this);
-      renderHorses();
+      Horse.renderHorses();
     });
   }
   
   document.addEventListener("DOMContentLoaded", function () {
     // Horse.gethorses();
-    console.log("a")
+    // console.log("a")
     Horse.getHorses();  //this will send an asynchronous request i.e. will fetch code but whilst waiting will carry on with other lines of code
-    console.log("d")
+    // console.log("d")
     // renderForm();
     formLinkEvent();
     horsesLinkEvent();

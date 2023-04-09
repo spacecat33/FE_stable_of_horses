@@ -37,7 +37,6 @@ class Horse {
     itsStable.innerText = `is boarded at ${this.stable.name}`;
     
 
-
     //the following is code for making them show up on page
     div.appendChild(h4);
     div.appendChild(itsStable);
@@ -47,24 +46,20 @@ class Horse {
     horsesDiv.appendChild(div);
   }
 
-
+/** STATIC FUNCTIONS **/
 
   //this pushes the instance of object
   save() {
     Horse.all.push(this) 
   }  
+
+
   //creates instance
   static create(attr) {
     let horse = new Horse(attr);
     horse.save();
     return horse;
   }
-
-
-
-
-
-  /** STATIC FUNCTIONS **/
 
   //get into collection, create all horse objects and store them
   static createFromCollection(collection) {
@@ -178,7 +173,6 @@ class Horse {
     let strongParams = {
       horse: {
         name: nameInput().value,
-        // stable: stableInput().value
       }
     }
     const id = e.target.dataset.id;
@@ -203,7 +197,7 @@ class Horse {
 static async getHorses() {
   //fetch to the rails api, horses index. Grab the horses
   // populate the main div with the horses
-  const data = await Api.get("/horses/");
+  const data = await Api.get("/horses");
   Horse.createFromCollection(data)
   Horse.renderHorses();
 }
@@ -214,7 +208,7 @@ static async deleteHorse(e) {
 
   let id = e.target.dataset.id;
 
-  const data = await Api.delete(Api.baseUrl + "/horses/" + id); //if you forget the await, it would immediately go to the next line and so will not have info from the await response to continue
+  const data = await Api.delete("/horses/" + id); //if you forget the await, it would immediately go to the next line and so will not have info from the await response to continue
   //this goes to backend controller destroy action
   Horse.all = Horse.all.filter(function(horse){
     return horse.id !== data.id;
