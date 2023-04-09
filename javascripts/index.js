@@ -4,7 +4,7 @@ const baseUrl = "http://localhost:3000"
 
 const main = () => document.getElementById("main");
 const nameInput = () => document.getElementById("name");
-// const stableInput = () => document.getElementById("stable"); 
+const stableInput = () => document.getElementById("stable"); 
 const form = () => document.getElementById("form");
 const formLink = () => document.getElementById("form-link");
 const horsesLink = () => document.getElementById("horses-link");
@@ -106,9 +106,11 @@ function resetFormInputs() {
   }
 
   function renderHorse(horse) {
+    // console.log(horse)
+    // debugger
     let div = document.createElement("div");
     let h4 = document.createElement("h4");
-    // let itsStable = document.createElement('p');
+    let itsStable = document.createElement('p');
     let p = document.createElement("p");
     let deleteLink = document.createElement("a");
     let editLink = document.createElement("a");
@@ -128,17 +130,16 @@ function resetFormInputs() {
     // debugger //is the pry of javascript
    
     h4.innerText = horse.name;
-    // itsStable.innerText = 'at ${horse.stable}';
-    p.innerText = horse.stable; //check whether this works?
+    itsStable.innerText = `is boarded at ${horse.stable.name}`;
+    
 
 
     //the following is code for making them show up on page
     div.appendChild(h4);
-    // div.appendChild(itsStable);
-    div.appendChild(p);
+    div.appendChild(itsStable);
     div.appendChild(editLink);
     div.appendChild(deleteLink);
-    
+  
     horsesDiv.appendChild(div);
 
   }
@@ -201,7 +202,7 @@ function editHorse(e) {
     let strongParams = {
       horse: {
         name: nameInput().value,
-        // stable: stableInput().value
+        stable_attributes: stableInput().value
       }
     }
     // send data to the backend via a post request
