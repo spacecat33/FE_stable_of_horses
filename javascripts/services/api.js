@@ -1,4 +1,5 @@
-//this is service class to help make app more dynamic
+//this is service class to help make app more dynamic (i.e. reuable code)
+
 class Api {
     static baseUrl = "http://localhost:3000"
    
@@ -22,7 +23,7 @@ class Api {
         let resp = await fetch(Api.baseUrl + path, {
             method: "POST",
             headers: Api.headers,
-            body: JSON.stringify(params)
+            body: JSON.stringify(params)  // .stringify is a serializer - enables us to save the state of the object and recreate the object in a new location.
         })
         let data = await resp.json();
 
