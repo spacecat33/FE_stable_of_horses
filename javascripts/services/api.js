@@ -1,3 +1,4 @@
+//this is service class to help make app more dynamic
 class Api {
     static baseUrl = "http://localhost:3000"
    
@@ -17,6 +18,27 @@ class Api {
       return data;
     }
 
+    static async post(path, params) {
+        let resp = await fetch(Api.baseUrl + path, {
+            method: "POST",
+            headers: Api.headers,
+            body: JSON.stringify(params)
+        })
+        let data = await resp.json();
+
+        return data;
+    }
+
+    static async patch(path, params) {
+        let resp = await fetch(Api.baseUrl + path, {
+            method: "PATCH",
+            headers: Api.headers,
+            body: JSON.stringify(params)
+        })
+        let data = await resp.json();
+
+        return data;
+    }
 }
 
   

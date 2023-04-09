@@ -159,23 +159,11 @@ class Horse {
       }
     }
     // send data to the backend via a post request
-    fetch(Api.baseUrl + '/horses', {
-      // this will point to a JS object and represent our strong params
-      headers: {
-        // this is how we want to send and receive our requests
-        "Accept": "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(strongParams),
-      method: "POST"
-    })
-    .then(function(resp) {
-      return resp.json();
-    })
-    .then(function(data) {
-      Horse.create(data);
-      Horse.renderHorses();
-    })
+    Api.post("/horses", strongParams)
+      .then(function(data) {
+        Horse.create(data);
+        Horse.renderHorses();
+      })
   }
 
 
@@ -191,33 +179,29 @@ class Horse {
     }
     const id = e.target.dataset.id;
 
-    fetch(Api.baseUrl + "/horses/" + id, {
-      // this will point to a JS object and represent our strong params
-      method: "PATCH",
-      headers: {
-        // this is how we want to send and receive our requests
-        "Accept": "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(strongParams), //stringifying the JSON to look like a string. it's still an object.
-    }) //then goes to update action in backend horses_controller
-    .then(function(resp) {
-      return resp.json();
-    })
-    .then(function(data) {
-      //selects the horse out of the array
-      let h = Horse.all.find(function(h) { // this code and below updates the frontend object to match the updated backend object (which was just updates with code above)
-        return h.id == data.id;  
-    })
-  // gets the index of the selected horse
-    let idx = Horse.all.indexOf(h);
+    Api.patch("/horses/" + id, strongParams)
+      .then(function(data) {
+        //selects the horse out of the array
+      let h = Horse.all.find((h) => h.id == data.id) // this code and below updates the frontend object to match the updated backend object (which was just updates with code above)
+      
+      // gets the index of the selected horse
+      let idx = Horse.all.indexOf(h);
 
-   //updates the index value with the newly updated horse but note that the id is the same
-    Horse.all[idx] = new Horse(data); // this takes the old object and updates it 
-    
-    //renders the array of horses to page
-    Horse.renderHorses();
-  })
+      //updates the index value with the newly updated horse but note that the id is the same
+      Horse.all[idx] = new Horse(data); // this takes the old object and updates it 
+      
+      //renders the array of horses to page
+      Horse.renderHorses();
+    })
+}
+
+
+static async getHorses() {
+  //fetch to the rails api, horses index. Grab the horses
+  // populate the main div with the horses
+  const data = await Api.get("/horses/");
+  Horse.createFromCollection(data)
+  Horse.renderHorses();
 }
 
 
