@@ -30,7 +30,7 @@ class Horse {
 
     editLink.addEventListener("click", Horse.editHorse); //adding eventlistener when the linkloads (not when the page loads)
     
-    deleteLink.addEventListener("click", deleteHorse)
+    deleteLink.addEventListener("click", Horse.deleteHorse)
     // debugger //is the pry of javascript
    
     h4.innerText = this.name;
@@ -159,7 +159,7 @@ class Horse {
       }
     }
     // send data to the backend via a post request
-    fetch(baseUrl + '/horses', {
+    fetch(Api.baseUrl + '/horses', {
       // this will point to a JS object and represent our strong params
       headers: {
         // this is how we want to send and receive our requests
@@ -191,7 +191,7 @@ class Horse {
     }
     const id = e.target.dataset.id;
 
-    fetch(baseUrl + "/horses/" + id, {
+    fetch(Api.baseUrl + "/horses/" + id, {
       // this will point to a JS object and represent our strong params
       method: "PATCH",
       headers: {
@@ -218,6 +218,24 @@ class Horse {
     //renders the array of horses to page
     Horse.renderHorses();
   })
+}
+
+
+static async deleteHorse(e) {
+  e.preventDefault();
+
+  let id = e.target.dataset.id;
+
+  const resp = await fetch(Api.baseUrl + "/horses/" + id, { //if you forget the await, it would immediately go to the next line and so will not have info from the await response to continue
+    method: "DELETE" //this goes to backend controller destroy action
+  })
+  const data = await resp.json();
+
+  Horse.all = Horse.all.filter(function(horse){
+    return horse.id !== data.id;
+  })
+
+  Horse.renderHorses();
 }
 
 }

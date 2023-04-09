@@ -34,22 +34,7 @@ function resetFormInputs() {
 
 
   
-  async function deleteHorse(e) {
-    e.preventDefault();
-
-    let id = e.target.dataset.id;
-
-    const resp = await fetch(baseUrl + "/horses/" + id, { //if you forget the await, it would immediately go to the next line and so will not have info from the await response to continue
-      method: "DELETE" //this goes to backend controller destroy action
-    })
-    const data = await resp.json();
-
-    Horse.all = Horse.all.filter(function(horse){
-      return horse.id !== data.id;
-    })
-
-    Horse.renderHorses();
-  }
+  
   // function deleteHorse(e) {
   //   e.preventDefault(); //this prevents default GET request when a link is clicked
 
@@ -81,13 +66,18 @@ function resetFormInputs() {
     
 //alternative way to fetch - using 'async and await:
 async function getHorses() {
-  const resp = await fetch(baseUrl + '/horses')
-  console.log("b")
-  const data = await resp.json();
-  console.log("c")
-  // horses = data
+  const data = await Api.get("/horses/");
+
   Horse.createFromCollection(data)
   Horse.renderHorses();
+  
+  // const resp = await fetch(baseUrl + '/horses')
+  // console.log("b")
+  // const data = await resp.json();
+  // console.log("c")
+  // horses = data
+  // Horse.createFromCollection(data)
+  // Horse.renderHorses();
 }
     // console.log('a')
     //fetch to the rails api, horses index. Grab the horses

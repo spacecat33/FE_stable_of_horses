@@ -1,21 +1,26 @@
-// class Api {
-//     static baseUrl = "http://localhost:3000"
+class Api {
+    static baseUrl = "http://localhost:3000"
+   
+    static headers = {
+      "Accept": "application/json",
+      "Content-Type": "application/json"
+    }
+
+    static async get(path) {
+      let resp = await fetch(Api.baseUrl + path, {
+        method: "GET",
+        headers: Api.headers
+      })
   
-//     static headers = {
-//       "Accept": "application/json",
-//       "Content-Type": "application/json"
-//     }
+      let data = await resp.json();
   
-//     static async get(path) {
-//       let resp = await fetch(Api.baseUrl + path, {
-//         method: "GET",
-//         headers: Api.headers
-//       })
+      return data;
+    }
+
+}
+
   
-//       let data = await resp.json();
-  
-//       return data;
-//     }
+
   
 //     static async post(path, params) {
 //       let resp = await fetch(Api.baseUrl + path, {

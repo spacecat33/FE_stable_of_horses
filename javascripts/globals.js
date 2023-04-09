@@ -1,7 +1,5 @@
 /** Global Variables **/
 
-const baseUrl = "http://localhost:3000"
-
 /** Node Getters **/
 
 const main = () => document.getElementById("main"); // = () => means  'implied return'
