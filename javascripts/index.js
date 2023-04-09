@@ -32,46 +32,6 @@ function resetFormInputs() {
 
 
 
-  function submitEditForm(e) {
-    e.preventDefault();
-
-    let strongParams = {
-      horse: {
-        name: nameInput().value,
-        // stable: stableInput().value
-      }
-    }
-    
-    const id = e.target.dataset.id;
-
-    fetch(baseUrl + "/horses/" + id, {
-      // this will point to a JS object and represent our strong params
-      method: "PATCH",
-      headers: {
-        // this is how we want to send and receive our requests
-        "Accept": "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(strongParams), //stringifying the JSON to look like a string. it's still an object.
-    }) //then goes to update action in backend horses_controller
-    .then(function(resp) {
-      return resp.json();
-    })
-    .then(function(horse) {
-      //selects the horse out of the array
-      let h = Horse.all.find(function(h) { // this code and below updates the frontend object to match the updated backend object (which was just updates with code above)
-        return h.id == horse.id;  
-    })
-  // gets the index of the selected horse
-    let idx = Horse.all.indexOf(h);
-
-   //updates the index value with the newly updated horse but note that the id is the same
-    Horse.all[idx] = horse; // this takes the old object and updates it 
-    
-    //renders the array of horses to page
-    renderHorses();
-  })
-}
 
   
   async function deleteHorse(e) {
