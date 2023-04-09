@@ -1,7 +1,5 @@
 /** Global Variables **/
 
-let horses = [];
-
 const baseUrl = "http://localhost:3000"
 
 /** Node Getters **/
