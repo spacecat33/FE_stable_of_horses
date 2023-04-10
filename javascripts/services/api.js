@@ -15,7 +15,7 @@ class Api {
       })
   
       let data = await resp.json();
-  
+  console.log ("fetching the data in the API.get function")
       return data;
     }
 

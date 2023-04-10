@@ -7,6 +7,7 @@ class Horse {
     this.id = attr.id;
     this.name = attr.name;
     this.stable = attr.stable;
+    console.log ("in the constructors section")
   }
 
   render() {
@@ -44,6 +45,9 @@ class Horse {
     div.appendChild(deleteLink);
   
     horsesDiv.appendChild(div);
+    console.log ("listing horses)")
+
+    console.log ("in render function in horse.js - rendering page with event listeners and buttons etc)")
   }
 
 /** STATIC FUNCTIONS **/
@@ -58,11 +62,13 @@ class Horse {
   static create(attr) {
     let horse = new Horse(attr);
     horse.save();
+    console.log ("in the create(attr) function, used it to create new horse and saved it")
     return horse;
   }
 
   //get into collection, create all horse objects and store them
   static createFromCollection(collection) {
+    console.log ("in the createfromcollection function - collected data from fetch and iterated over it to create js models")
    collection.forEach(data => Horse.create(data)) //the data then get passed up to the static create function, creates a new instance which then takes us higher up to the contructor function  which will then go to save and push the new instance into array which returns the object
   }
 
@@ -129,7 +135,7 @@ class Horse {
   static renderHorses() {
     resetMain();
     main().innerHTML= Horse.horsesTemplate(); 
-
+    console.log ("in the renderhorses function - uses horsesTemplate and then shows the list of horses")
     Horse.all.forEach(horse => horse.render()); //instance method
   }
 
@@ -198,6 +204,8 @@ static async getHorses() {
   //fetch to the rails api, horses index. Grab the horses
   // populate the main div with the horses
   const data = await Api.get("/horses");
+  console.log ("in the getHorses function - successfully fetched data")
+  debugger
   Horse.createFromCollection(data)
   Horse.renderHorses();
 }
