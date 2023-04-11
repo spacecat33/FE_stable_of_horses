@@ -20,8 +20,12 @@ class Horse {
     let h1 = document.createElement("h1");
     let deleteLink = document.createElement("a");
     let editLink = document.createElement("a");
-    let horsesDiv = document.getElementById("horses");
+    // let horsesDiv = document.getElementById("horses");
     let stablesDiv = document.getElementById("stables");
+    // const h4 = document.querySelector('h4');
+   
+      // h5.innerHTML = stable.name;
+      // h5.appendChild(h1);
     
     editLink.dataset.id = this.id;
     editLink.setAttribute("href", "#")
@@ -37,8 +41,8 @@ class Horse {
     // debugger //is the pry of javascript
    
     h4.innerText = this.name;
-    // itsStable.innerText = `is boarded at ${this.stable.name}`;
-    h1.innerText = this.stable // needs to show horse names 
+    // itsStable.innerText = `is boarded at ${stable}`;
+    // h1.innerText = stables.horse.name // needs to show horse names 
     // neighbours.innerText = `along with these other horses ${this.stable.horse}`
     
 
@@ -47,6 +51,7 @@ class Horse {
     div.appendChild(itsStable);
     div.appendChild(editLink);
     div.appendChild(deleteLink);
+    div.appendChild(h1);
   
     // horsesDiv.appendChild(div);
     // console.log ("listing horses")
@@ -217,16 +222,20 @@ class Horse {
 static async getHorses() { //new
   //fetch to the rails api, horses index. Grab the horses
   // populate the main div with the horses
-  const data = await Api.get("/stables");
+  const stables = await Api.get("/stables");
   console.log ("in the getHorses function - successfully fetched data")
   // debugger;
-  data.map(stable => {
-    console.warn(stable.name)
-    stable.horses.map(horse => {
-      console.log(horse.name) 
+  // const h4 = document.querySelector('h4');
+    stables.map(stable => {
+      // const h5 = document.createElement ('h5');
+      // h5.innerHTML = stable.name;
+      // h5.appendChild(h1);
+        console.warn(stable.name) // add method here 
+      stable.horses.map(horse => {
+        console.log(horse.name) // add method here 
     })
   })
-  Horse.createFromCollection(data)
+  Horse.createFromCollection(stables)
   Horse.renderHorses();
 }
 
