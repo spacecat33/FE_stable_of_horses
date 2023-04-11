@@ -16,10 +16,12 @@ class Horse {
     let div = document.createElement("div");
     let h4 = document.createElement("h4");
     let itsStable = document.createElement('p');
-    let p = document.createElement("p");
+    let neighbours = document.createElement('p');
+    let h1 = document.createElement("h1");
     let deleteLink = document.createElement("a");
     let editLink = document.createElement("a");
     let horsesDiv = document.getElementById("horses");
+    let stablesDiv = document.getElementById("stables");
     
     editLink.dataset.id = this.id;
     editLink.setAttribute("href", "#")
@@ -35,7 +37,9 @@ class Horse {
     // debugger //is the pry of javascript
    
     h4.innerText = this.name;
-    itsStable.innerText = `is boarded at ${this.stable.name}`;
+    // itsStable.innerText = `is boarded at ${this.stable.name}`;
+    h1.innerText = this.stable // needs to show horse names 
+    // neighbours.innerText = `along with these other horses ${this.stable.horse}`
     
 
     //the following is code for making them show up on page
@@ -44,8 +48,11 @@ class Horse {
     div.appendChild(editLink);
     div.appendChild(deleteLink);
   
-    horsesDiv.appendChild(div);
-    console.log ("listing horses)")
+    // horsesDiv.appendChild(div);
+    // console.log ("listing horses")
+
+    stablesDiv.appendChild(div);
+    console.log ("listing stables")
 
     console.log ("in render function in horse.js - rendering page with event listeners and buttons etc)")
   }
@@ -77,12 +84,19 @@ class Horse {
 
 
 
-  /** Horse Templates **/
+  /** Templates **/
 
   static horsesTemplate() {
     return `
     <h3>List Of Horses</h3>
     <div id="horses"></div>
+    `;
+  }
+
+  static stablesTemplate() {
+    return `
+    <h3>List Of Stables</h3>
+    <div id="stables"></div>
     `;
   }
 
@@ -134,7 +148,7 @@ class Horse {
 
   static renderHorses() {
     resetMain();
-    main().innerHTML= Horse.horsesTemplate(); 
+    main().innerHTML= Horse.stablesTemplate(); 
     console.log ("in the renderhorses function - uses horsesTemplate and then shows the list of horses")
     Horse.all.forEach(horse => horse.render()); //instance method
   }
@@ -200,12 +214,18 @@ class Horse {
 }
 
 
-static async getHorses() {
+static async getHorses() { //new
   //fetch to the rails api, horses index. Grab the horses
   // populate the main div with the horses
-  const data = await Api.get("/horses");
+  const data = await Api.get("/stables");
   console.log ("in the getHorses function - successfully fetched data")
-  debugger
+  // debugger;
+  data.map(stable => {
+    console.warn(stable.name)
+    stable.horses.map(horse => {
+      console.log(horse.name) 
+    })
+  })
   Horse.createFromCollection(data)
   Horse.renderHorses();
 }
