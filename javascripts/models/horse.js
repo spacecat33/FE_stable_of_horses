@@ -16,7 +16,7 @@ class Horse {
     let div = document.createElement("div");
     let h4 = document.createElement("h4");
     let itsStable = document.createElement('p');
-    let neighbours = document.createElement('p');
+    // let neighbours = document.createElement('p');
     let h1 = document.createElement("h1");
     let deleteLink = document.createElement("a");
     let editLink = document.createElement("a");
@@ -227,11 +227,12 @@ static async getHorses() { //new
   // debugger;
   // const h4 = document.querySelector('h4');
     stables.map(stable => {
-      // const h5 = document.createElement ('h5');
-      // h5.innerHTML = stable.name;
-      // h5.appendChild(h1);
+      const h1 = document.createElement ('h1');
+        h1.innerText = stable.name;
+      h1.appendChild(h1);
         console.warn(stable.name) // add method here 
       stable.horses.map(horse => {
+        h1.innerText = horse.name
         console.log(horse.name) // add method here 
     })
   })
