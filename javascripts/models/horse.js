@@ -7,7 +7,7 @@ class Horse {
     this.id = attr.id;
     this.name = attr.name;
     this.stable = attr.stable;
-    console.log ("in the constructors section")
+    // console.log ("in the constructors section")
   }
 
   render() {
@@ -57,9 +57,9 @@ class Horse {
     // console.log ("listing horses")
 
     stablesDiv.appendChild(div);
-    console.log ("listing stables")
+    // console.log ("listing stables")
 
-    console.log ("in render function in horse.js - rendering page with event listeners and buttons etc)")
+    // console.log ("in render function in horse.js - rendering page with event listeners and buttons etc)")
   }
 
 /** STATIC FUNCTIONS **/
@@ -74,13 +74,13 @@ class Horse {
   static create(attr) {
     let horse = new Horse(attr);
     horse.save();
-    console.log ("in the create(attr) function, used it to create new horse and saved it")
+    // console.log ("in the create(attr) function, used it to create new horse and saved it")
     return horse;
   }
 
   //get into collection, create all horse objects and store them
   static createFromCollection(collection) {
-    console.log ("in the createfromcollection function - collected data from fetch and iterated over it to create js models")
+    // console.log ("in the createfromcollection function - collected data from fetch and iterated over it to create js models")
    collection.forEach(data => Horse.create(data)) //the data then get passed up to the static create function, creates a new instance which then takes us higher up to the contructor function  which will then go to save and push the new instance into array which returns the object
   }
 
@@ -227,17 +227,23 @@ static async getHorses() { //new
   // debugger;
   // const h4 = document.querySelector('h4');
     stables.map(stable => {
+      const div = document.createElement ('div')
       const h1 = document.createElement ('h1');
         h1.innerText = stable.name;
-      h1.appendChild(h1);
-        console.warn(stable.name) // add method here 
+        
+      div.appendChild(h1);
+        // console.warn(stable.name) // add method here 
       stable.horses.map(horse => {
-        h1.innerText = horse.name
-        console.log(horse.name) // add method here 
+        const p = document.createElement('p');
+        p.innerText = horse.name
+        div.appendChild(p);
+        // console.log(horse.name) // add method here 
     })
+    main().appendChild(div);
+
   })
-  Horse.createFromCollection(stables)
-  Horse.renderHorses();
+  // Horse.createFromCollection(stables)
+  // Horse.renderHorses();
 }
 
 
