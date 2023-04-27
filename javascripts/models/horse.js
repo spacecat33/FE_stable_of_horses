@@ -1,12 +1,12 @@
 // Model js folder to encapsulate the data
 
-class Horse {
+class Stable {
   static all = [] //static means 'class level'
 
   constructor(attr) {
     this.id = attr.id;
     this.name = attr.name;
-    this.stable = attr.stable;
+    // this.horses = attr.horses;
     // console.log ("in the constructors section")
   }
 
@@ -35,9 +35,9 @@ class Horse {
     deleteLink.setAttribute("href", "#")
     deleteLink.innerText = "Delete"
 
-    editLink.addEventListener("click", Horse.editHorse); //adding eventlistener when the linkloads (not when the page loads)
+    editLink.addEventListener("click", Stable.editHorse); //adding eventlistener when the linkloads (not when the page loads)
     
-    deleteLink.addEventListener("click", Horse.deleteHorse)
+    deleteLink.addEventListener("click", Stable.deleteHorse)
     // debugger //is the pry of javascript
    
     h4.innerText = this.name;
@@ -66,13 +66,13 @@ class Horse {
 
   //this pushes the instance of object
   save() {
-    Horse.all.push(this) 
+    Stable.all.push(this) 
   }  
 
 
   //creates instance
   static create(attr) {
-    let horse = new Horse(attr);
+    let horse = new Stable(attr);
     horse.save();
     // console.log ("in the create(attr) function, used it to create new horse and saved it")
     return horse;
@@ -81,7 +81,7 @@ class Horse {
   //get into collection, create all horse objects and store them
   static createFromCollection(collection) {
     // console.log ("in the createfromcollection function - collected data from fetch and iterated over it to create js models")
-   collection.forEach(data => Horse.create(data)) //the data then get passed up to the static create function, creates a new instance which then takes us higher up to the contructor function  which will then go to save and push the new instance into array which returns the object
+   collection.forEach(data => Stable.create(data)) //the data then get passed up to the static create function, creates a new instance which then takes us higher up to the contructor function  which will then go to save and push the new instance into array which returns the object
   }
 
 
@@ -107,14 +107,14 @@ class Horse {
 
   static formTemplate() {
     return `
-    <h3>Create Horse</h3>
+    <h3>Create Stable and horse</h3>
     <form id="form">
       <div class="input-field">
-        <label for="name">Name</label>
+        <label for="name"> Stable Name</label>
         <input type="text" name="name" id="name" />
       </div>
       <div class="input-field">
-        <label for="stable">Stable</label>
+        <label for="stable">Horse name</label>
         <input type="text" name="stable" id="stable" />
       </div>
       <input type="submit" value="Create Horse" />
@@ -122,40 +122,40 @@ class Horse {
     `;
   }
 
-  static editFormTemplate(horse) {
+  static editFormTemplate(stable) {
     return `
-    <h3>Edit Horse</h3>
-    <form id="form" data-id="${horse.id}"> 
+    <h3>Edit Stable</h3>
+    <form id="form" data-id="${stable.id}"> 
       <div class="input-field">
         <label for="name">Name</label>
-        <input type="text" name="name" id="name" value="${horse.name}" />
+        <input type="text" name="name" id="name" value="${stable.name}" />
       </div>
-      <input type="submit" value="Edit Horse" />
+      <input type="submit" value="Edit Stable" />
     </form>
     `;
-  } //the data-id with horse.id interpolated let's grab the form plus the specific id. This is needed for the request.
+  } //the data-id with stable.id interpolated let's grab the form plus the specific id. This is needed for the request.
 
 
   /** renders **/
 
   static renderForm() {
     resetMain();
-    main().innerHTML = Horse.formTemplate();
-    form().addEventListener("submit", Horse.submitForm);
+    main().innerHTML = Stable.formTemplate();
+    form().addEventListener("submit", Stable.submitForm);
   }
 
 
-  static renderEditForm(horse) {
+  static renderEditForm(stable) {
     resetMain(); // reset the main div/clear it out
-    main().innerHTML = Horse.editFormTemplate(horse); //display the form with the horse's information included in the fields
-    form().addEventListener("submit", Horse.submitEditForm); // when click on submiteditform, takes us to submiteditform function
+    main().innerHTML = Stable.editFormTemplate(stable); //display the form with the horse's information included in the fields
+    form().addEventListener("submit", Stable.submitEditForm); // when click on submiteditform, takes us to submiteditform function
   }
 
   static renderHorses() {
     resetMain();
-    main().innerHTML= Horse.stablesTemplate(); 
+    main().innerHTML= Stable.stablesTemplate(); 
     console.log ("in the renderhorses function - uses horsesTemplate and then shows the list of horses")
-    Horse.all.forEach(horse => horse.render()); //instance method
+    Stable.all.forEach(horse => horse.render()); //instance method
   }
 
 
@@ -165,11 +165,11 @@ class Horse {
     
     const id = e.target.dataset.id;
   
-    const horse = Horse.all.find(function(horse) {
-      return horse.id == id;
+    const stable = Stable.all.find(function(stable) {
+      return stable.id == id;
     })
   
-    Horse.renderEditForm(horse)
+    Stable.renderEditForm(stable)
   }
 
 
@@ -177,16 +177,16 @@ class Horse {
     e.preventDefault();
     
     let strongParams = {
-      horse: {
+      stable: {
         name: nameInput().value,
         stable_attributes: stableInput().value
       }
     }
     // send data to the backend via a post request
-    Api.post("/horses", strongParams)
+    Api.post("/stables", strongParams)
       .then(function(data) {
-        Horse.create(data);
-        Horse.renderHorses();
+        Stable.create(data);
+        Stable.renderHorses();
       })
   }
 
@@ -196,25 +196,25 @@ class Horse {
     e.preventDefault();
 
     let strongParams = {
-      horse: {
+      stable: {
         name: nameInput().value,
       }
     }
     const id = e.target.dataset.id;
 
-    Api.patch("/horses/" + id, strongParams)
+    Api.patch("/stables/" + id, strongParams)
       .then(function(data) {
         //selects the horse out of the array
-      let h = Horse.all.find((h) => h.id == data.id) // this code and below updates the frontend object to match the updated backend object (which was just updates with code above)
+      let h = Stable.all.find((h) => h.id == data.id) // this code and below updates the frontend object to match the updated backend object (which was just updates with code above)
       
       // gets the index of the selected horse
-      let idx = Horse.all.indexOf(h);
+      let idx = Stable.all.indexOf(h);
 
       //updates the index value with the newly updated horse but note that the id is the same
-      Horse.all[idx] = new Horse(data); // this takes the old object and updates it 
+      Stable.all[idx] = new Stable(data); // this takes the old object and updates it 
       
       //renders the array of horses to page
-      Horse.renderHorses();
+      Stable.renderHorses();
     })
 }
 
@@ -228,22 +228,22 @@ static async getHorses() { //new
   // const h4 = document.querySelector('h4');
     stables.map(stable => {
       const div = document.createElement ('div')
-      const h1 = document.createElement ('h1');
-        h1.innerText = stable.name;
+      const h3 = document.createElement ('h3');
+        h3.innerText = stable.name;
         
-      div.appendChild(h1);
+      div.appendChild(h3);
         // console.warn(stable.name) // add method here 
       stable.horses.map(horse => {
-        const p = document.createElement('p');
-        p.innerText = horse.name
-        div.appendChild(p);
+        const li = document.createElement('li');
+        li.innerText = horse.name
+        div.appendChild(li);
         // console.log(horse.name) // add method here 
     })
     main().appendChild(div);
 
   })
-  // Horse.createFromCollection(stables)
-  // Horse.renderHorses();
+  Stable.createFromCollection(stables)
+  Stable.horses;
 }
 
 
@@ -252,13 +252,13 @@ static async deleteHorse(e) {
 
   let id = e.target.dataset.id;
 
-  const data = await Api.delete("/horses/" + id); //if you forget the await, it would immediately go to the next line and so will not have info from the await response to continue
+  const data = await Api.delete("/stables/" + id); //if you forget the await, it would immediately go to the next line and so will not have info from the await response to continue
   //this goes to backend controller destroy action
-  Horse.all = Horse.all.filter(function(horse){
-    return horse.id !== data.id;
+  Stable.all = Stable.all.filter(function(stable){
+    return stable.id !== data.id;
   })
 
-  Horse.renderHorses();
+  Stable.renderHorses();
 }
 
 }
