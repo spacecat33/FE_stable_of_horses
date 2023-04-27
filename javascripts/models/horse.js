@@ -6,7 +6,7 @@ class Stable {
   constructor(attr) {
     this.id = attr.id;
     this.name = attr.name;
-    // this.horses = attr.horses;
+    // this.horses.name = attr.horses.name;
     // console.log ("in the constructors section")
   }
 
@@ -114,10 +114,10 @@ class Stable {
         <input type="text" name="name" id="name" />
       </div>
       <div class="input-field">
-        <label for="stable">Horse name</label>
-        <input type="text" name="stable" id="stable" />
+        <label for="horse">Horse name</label>
+        <input type="text" name="horse" id="horse" />
       </div>
-      <input type="submit" value="Create Horse" />
+      <input type="submit" value="Create Stable" />
     </form>
     `;
   }
