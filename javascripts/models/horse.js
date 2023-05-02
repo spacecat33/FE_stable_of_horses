@@ -6,7 +6,7 @@ class Stable {
   constructor(attr) {
     this.id = attr.id;
     this.name = attr.name;
-    // this.horse = attr.horse; //fix this
+    this.horses_attributes = attr.horses_attributes; //fix this
     // this.horses = attr.horses;
     // console.log ("in the constructors section")
   }
@@ -74,6 +74,7 @@ class Stable {
 
   //creates instance
   static create(attr) {
+    // debugger;
     console.log("create")
     let stable = new Stable(attr);
     stable.save();
@@ -207,7 +208,7 @@ class Stable {
     let strongParams = {
       stable: {
         name: nameInput().value,
-        horse: horseInput().value //fix this
+        horses_attributes: {name: horseInput().value} //fix this
       }
     }
     const id = e.target.dataset.id;
