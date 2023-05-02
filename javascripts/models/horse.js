@@ -7,7 +7,7 @@ class Stable {
     this.id = attr.id;
     this.name = attr.name;
     // this.horse = attr.horse; //fix this
-    this.horses = attr.horses;
+    // this.horses = attr.horses;
     // console.log ("in the constructors section")
   }
 
@@ -187,9 +187,10 @@ class Stable {
       stable: {
         name: nameInput().value,
         // horse: horseInput().value, //fix this
-        horses_attributes: horseInput().value //this ensures the horse ul displays
+        horses_attributes: {name: horseInput().value} //this ensures the horse ul displays
       }
     }
+    debugger;
     // send data to the backend via a post request
     Api.post("/stables", strongParams)
       .then(function(data) {
