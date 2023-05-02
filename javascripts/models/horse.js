@@ -6,12 +6,13 @@ class Stable {
   constructor(attr) {
     this.id = attr.id;
     this.name = attr.name;
-    // this.horses.name = attr.horses.name;
+    // this.horse = attr.horse; //fix this
+    this.horses = attr.horses;
     // console.log ("in the constructors section")
   }
 
   render() {
-    // console.log(horse)
+    console.log("render")
     // debugger
     let div = document.createElement("div");
     let h4 = document.createElement("h4");
@@ -58,7 +59,7 @@ class Stable {
 
     stablesDiv.appendChild(div);
     // console.log ("listing stables")
-
+    console.log("end of render")
     // console.log ("in render function in horse.js - rendering page with event listeners and buttons etc)")
   }
 
@@ -66,21 +67,23 @@ class Stable {
 
   //this pushes the instance of object
   save() {
+    console.log("save")
     Stable.all.push(this) 
   }  
 
 
   //creates instance
   static create(attr) {
-    let horse = new Stable(attr);
-    horse.save();
-    // console.log ("in the create(attr) function, used it to create new horse and saved it")
-    return horse;
-  }
+    console.log("create")
+    let stable = new Stable(attr);
+    stable.save();
+    console.log ("in the create(attr) function, used it to create new stable and saved it")
+    return stable
+    }
 
   //get into collection, create all horse objects and store them
   static createFromCollection(collection) {
-    // console.log ("in the createfromcollection function - collected data from fetch and iterated over it to create js models")
+    console.log ("in the createfromcollection function - collected data from fetch and iterated over it to create js models")
    collection.forEach(data => Stable.create(data)) //the data then get passed up to the static create function, creates a new instance which then takes us higher up to the contructor function  which will then go to save and push the new instance into array which returns the object
   }
 
@@ -99,6 +102,7 @@ class Stable {
   }
 
   static stablesTemplate() {
+    console.log("stablesTemplate")
     return `
     <h3>List Of Stables</h3>
     <div id="stables"></div>
@@ -106,6 +110,7 @@ class Stable {
   }
 
   static formTemplate() {
+    console.log("formTemplate")
     return `
     <h3>Create Stable and horse</h3>
     <form id="form">
@@ -139,6 +144,7 @@ class Stable {
   /** renders **/
 
   static renderForm() {
+    console.log("renderForm function")
     resetMain();
     main().innerHTML = Stable.formTemplate();
     form().addEventListener("submit", Stable.submitForm);
@@ -154,7 +160,7 @@ class Stable {
   static renderHorses() {
     resetMain();
     main().innerHTML= Stable.stablesTemplate(); 
-    console.log ("in the renderhorses function - uses horsesTemplate and then shows the list of horses")
+    console.log ("in the renderhorses function - uses stablesTemplate")
     Stable.all.forEach(horse => horse.render()); //instance method
   }
 
@@ -175,11 +181,13 @@ class Stable {
 
   static submitForm(e) {
     e.preventDefault();
-    
+    console.log("submitForm")
+    debugger;
     let strongParams = {
       stable: {
         name: nameInput().value,
-        stable_attributes: stableInput().value
+        // horse: horseInput().value, //fix this
+        horses_attributes: horseInput().value //this ensures the horse ul displays
       }
     }
     // send data to the backend via a post request
@@ -194,10 +202,11 @@ class Stable {
 
   static submitEditForm(e) {
     e.preventDefault();
-
+    console.log("submitEditForm")
     let strongParams = {
       stable: {
         name: nameInput().value,
+        horse: horseInput().value //fix this
       }
     }
     const id = e.target.dataset.id;
@@ -222,9 +231,9 @@ class Stable {
 static async getHorses() { //new
   //fetch to the rails api, horses index. Grab the horses
   // populate the main div with the horses
-  const stables = await Api.get("/stables");
+  const stables = await Api.get("/stables/");
   console.log ("in the getHorses function - successfully fetched data")
-  // debugger;
+  debugger;
   // const h4 = document.querySelector('h4');
     stables.map(stable => {
       const div = document.createElement ('div')
@@ -237,7 +246,7 @@ static async getHorses() { //new
         const li = document.createElement('li');
         li.innerText = horse.name
         div.appendChild(li);
-        // console.log(horse.name) // add method here 
+        console.log(horse.name) // add method here 
     })
     main().appendChild(div);
 
@@ -249,7 +258,7 @@ static async getHorses() { //new
 
 static async deleteHorse(e) {
   e.preventDefault();
-
+  console.log("deleteHorses")
   let id = e.target.dataset.id;
 
   const data = await Api.delete("/stables/" + id); //if you forget the await, it would immediately go to the next line and so will not have info from the await response to continue
