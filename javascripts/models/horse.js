@@ -6,7 +6,7 @@ class Stable {
   constructor(attr) {
     this.id = attr.id;
     this.name = attr.name;
-    this.horses_attributes = attr.horses_attributes; //fix this
+    // this.horses_attributes = attr.horses_attributes; //fix this
     // this.horses = attr.horses;
     // console.log ("in the constructors section")
   }
